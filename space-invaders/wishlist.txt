@@ -1,0 +1,18 @@
+Non-essential but would like to implement if I have time
+1. bunkers that are destructible
+  probably quite difficult
+2. color scheme
+  bottom third all the items green
+  middle third white
+  top third red?
+3. animations
+  death animations and also destruction animations on bombs and missiles hitting boundary
+4. mothership 
+  worth 200 points and obeys path like frogger
+  doesn't fire missiles
+5. collision for if a missile hits a bomb
+6. want to implement multiple rounds
+  ideally with a greater difficulty-maybe all that increases is the speed of the swarm?
+7. three different types of alien crafts in the swarm
+  this might be somewhat straightforward, might just have to be careful with classes
+8. potentially make the grid a lot bigger so that the missiles can miss

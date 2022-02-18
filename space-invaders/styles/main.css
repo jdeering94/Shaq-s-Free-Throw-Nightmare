@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.gamegrid-wrapper {
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+}
+
+.gamegrid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: 600px;
+  width: 600px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.gamegrid div {
+  border: 1px solid lightgrey;
+  height: 5%;
+  width: 5%;
+}
+
+.spaceship {
+  background-color: black;
+}

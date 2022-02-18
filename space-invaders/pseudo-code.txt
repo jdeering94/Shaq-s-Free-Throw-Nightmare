@@ -1,0 +1,72 @@
+Main goal is Space-invaders
+MVP - I want to be able to have a swarm of aliens and a ship that can fire back at them
+  the loss condition is the swarm reaching the bottom row, the win condition being the aliens are wiped out
+  score needs to be displayed
+  will be one round long
+
+  Requirements of game grid
+    needs to house everything
+    needs to have boundaries on all four sides
+
+  Requirements of the alien swarm:
+    moves every second in unison, right until it reaches the boundary,
+    then down, then left until it reaches the boundary and so on
+    the alien swarm needs to drop bombs periodically
+    each alien in the swarm needs to interact with cannon fire and disappear when hit
+      each hit needs to generate a score
+    when the swarm reaches the bottom, it needs to initiate a game over
+    potentially add the mothership as well - random event of a ship that flies through
+      will probably need to use some similar logic or code to that of frogger i.e. objects created and passed through the game field
+  
+  Requirements for the spaceship
+    needs to be able to move left and right
+    needs to stop at the boundaries
+    needs to be able to be hit by the alien bomb
+    needs to die if hit by bomb
+
+Requirements for game score
+    needs to display and update dynamically
+    needs to show upon game end
+
+NEEDS TO BE CREATED TO MEET MVP CRITERIA
+1. Need to create a game grid
+  do that by having a single div in the html, then by adding an array in the JS, 
+  then you push a cell into the array, and append it into the DOM
+  can then style it using css
+
+2.A Need to create spaceship
+  similar to pikachu, can do this by adding a class to a cell
+  style it in css to give it a background sprite
+  2.B have to add eventlisteners that 'move' it based on key inputs
+    'moving' really just means removing the class and adding it to the cell that the key button has said
+    this will need to be able to obey the boundaries-use the mathematical method rather than array
+  2.C have to add eventlistener for firing a missile
+    will use spacebar for this, like the moving function will have to use
+    adding/removing classes in order to make it 'move'
+    the movement will be based off of a setinterval, moving every such and such seconds until it hits the boundary or an alien
+      most likely better to use the mathematical method for establishing boundaries rather than identifying cells
+    the missile will need to have collision detection-likely the most complicated part but might be able to reuse for alien missiles
+    can only fire one missile at a time, need to wait for first to stop existing before being able to fire again
+
+3. Need to create alien swarm
+    same basic logic as creating the ship, although multiple
+    will be based off of the same logic as moving the missile, however it s a function that needs to apply to a range of cells
+    using setInterval to dictate how often it moves, but it has to be able to be cancelled when it reaches a boundary
+      potential hiccup is that the whole swarm has to move as one, so if any cell with an alien class hits the boundary they all have to change their movement
+    the direction needs to change when hitting a boundary, and also it needs to move down one row
+    each cell needs to be able to interact with a missile and have its class removed
+    needs to be able to randomly fire a missile
+      really not sure how to be able to do this
+      I imagine maybe a setInterval that targets a random cell and creates a bomb that fires from its position
+      this can have multiple bombs at once
+      will have to really play with this, is 10% chance too high every 5 seconds?
+    Need to add a game over if one member of the swarm reaches the bottom boundary
+      this will use similar logic to the left/right boundary 
+
+4. Need to impement a game score
+  this is pretty simple, just need to query select an element in the html, and on every alien killed it needs to increment it by a score usinf .innerHTML
+
+5. Need to create win/loss conditions
+  on wave being deleted, a win screen
+    probably use if any class remains in the array
+  Loss condition being if aliens reach border or if spaceship is hit by a bomb
