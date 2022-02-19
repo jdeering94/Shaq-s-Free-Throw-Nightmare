@@ -54,6 +54,7 @@ NEEDS TO BE CREATED TO MEET MVP CRITERIA
     using setInterval to dictate how often it moves, but it has to be able to be cancelled when it reaches a boundary
       potential hiccup is that the whole swarm has to move as one, so if any cell with an alien class hits the boundary they all have to change their movement
     the direction needs to change when hitting a boundary, and also it needs to move down one row
+      could this be doen using switch cases?
     each cell needs to be able to interact with a missile and have its class removed
     needs to be able to randomly fire a missile
       really not sure how to be able to do this
