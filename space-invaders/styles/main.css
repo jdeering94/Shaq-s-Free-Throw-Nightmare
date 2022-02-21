@@ -46,3 +46,7 @@ body {
 .alien {
   background-color: red;
 }
+
+.bomb {
+  background-color: green;
+}

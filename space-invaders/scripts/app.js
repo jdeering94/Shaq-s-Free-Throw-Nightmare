@@ -1,13 +1,14 @@
 const grid = document.querySelector('.gamegrid');
 
 const startMovement = document.querySelector('button');
+const score = document.querySelector('.score');
 
 const width = 20;
 const gridCellCount = width * width;
 const cells = [];
-const alienArray = [
-  42, 44, 46, 48, 50, 52, 54, 56, 81, 83, 85, 87, 89, 91, 93, 95, 97, 122, 124,
-  126, 128, 130, 132, 134, 136,
+let alienArray = [
+  44, 46, 48, 50, 52, 54, 83, 85, 87, 89, 91, 93, 95, 124, 126, 128, 130, 132,
+  134,
 ];
 
 let spaceshipPosition = 389;
@@ -29,7 +30,7 @@ function createGrid() {
 createGrid();
 
 const aliens = document.querySelectorAll('.alien');
-let alienPosition = 50;
+// let alienPosition = 50;
 
 // functions that can govern spaceship movement
 function addSpaceship() {
@@ -69,10 +70,13 @@ let firing = false;
 
 function fireLaser() {
   let firePosition = spaceshipPosition;
+  console.log(firePosition);
+
   if (firing === false) {
     const firingId = setInterval(LaserMoving, 30);
     function LaserMoving() {
       let y = Math.floor(firePosition / width);
+      let alienIndex = alienArray.indexOf(firePosition);
       // case for laser hitting boundary
       if (y === 0) {
         clearInterval(firingId);
@@ -81,8 +85,11 @@ function fireLaser() {
         // the case for laser hitting alien
       } else if (cells[firePosition].classList.contains('alien')) {
         clearInterval(firingId);
+        console.log(`hit at ${firePosition}`);
+        score.innerHTML = parseInt(score.innerHTML) + 5;
         cells[firePosition].classList.remove('laser');
         cells[firePosition].classList.remove('alien');
+        alienArray.splice(alienIndex, 1);
         firing = false;
         // case for laser moving
       } else {
@@ -105,49 +112,187 @@ function fireLaser() {
 // what if I do one big setinterval that just does movement
 // and then within the movement function I define the direction and cases for change of direction
 
-console.log(aliens);
-// I guess I can try writing the function for one movement to make sure it works and then adapt
-// maybe I can write one interval for it moving to the right, and one interval for it to move to the left
-function moveAliens() {
-  setInterval(alienMovement, 500);
-}
-
-let alienMotion = true;
-
 function alienMovement() {
-  let alienX = alienPosition % width;
-  if (alienMotion === true && alienX === width - 1) {
-    removeAlien();
-    alienPosition += width;
-    addAlien();
-    alienMotion = false;
-  } else if (alienMotion === true) {
-    removeAlien();
-    alienPosition++;
-    addAlien();
-    console.log('move right');
-  } else if (alienX === 0 && alienMotion === false) {
-    removeAlien();
-    alienPosition += width;
-    addAlien();
-    alienMotion = true;
-  } else if (alienMotion === false) {
-    removeAlien();
-    alienPosition--;
-    addAlien();
-    console.log('move left');
+  const swarmStart = setInterval(moveAliens, 500);
+  function moveAliens() {
+    if (
+      alienArray.some((element) => Math.floor(element / width) === width - 1)
+    ) {
+      clearInterval(swarmStart);
+    } else if (
+      alienArray.some((element) => element % width === width - 1) === true &&
+      alienMotion === true
+    ) {
+      option1();
+      alienMotion = false;
+    } else if (alienMotion === true) {
+      option2();
+      console.log('option 2');
+    } else if (
+      alienArray.some((element) => element % width === 0) === true &&
+      alienMotion === false
+    ) {
+      option3();
+      alienMotion = true;
+      console.log('option 3');
+    } else if (alienMotion === false) {
+      option4();
+      console.log('option 4');
+    }
   }
 }
 
-// can select the id of the square from the gamegrid array, I guess I need to pass through, and for each div
-// with a class of alien, perform the alienmovement function
+// let alienMotion = true;
 
-startMovement.addEventListener('click', moveAliens);
+// function alienMovementCheck() {
+//   alienArray.forEach((element) => alienMovement(element));
+// }
 
-function removeAlien() {
-  cells[alienPosition].classList.remove('alien');
+// function alienMovement(element) {
+//   let alienX = element % width;
+//   if (alienMotion === true && alienX === width - 1) {
+//     element += width;
+//     alienMotion = false;
+//     console.log(alienArray);
+//   } else if (alienMotion === true) {
+//     element++;
+//     console.log('move right');
+//     alienArray.forEach((element) => element++);
+//     console.log(alienArray[0]);
+//   } else if (alienX === 0 && alienMotion === false) {
+//     element += width;
+//     alienMotion = true;
+//   } else if (alienMotion === false) {
+//     element--;
+//     console.log('move left');
+//   }
+// }
+
+let alienMotion = true;
+
+// main issue at the moment is to be able to loop through the entire array for options 1 and 3
+// at the moment it only adjusts for one block, instead of the whole array
+// maybe I can write a foreach function to perform on option 1 and 3? then changes the alienMotion to true or false and it keeps going?
+
+function option1() {
+  for (let x = 0; x < alienArray.length; x++) {
+    removeAlien(x);
+    alienArray[x] = alienArray[x] + width;
+    console.log('move down');
+    addAlien(x);
+  }
+}
+function option2() {
+  for (let x = 0; x < alienArray.length; x++) {
+    dropBomb();
+    removeAlien(x);
+    alienArray[x] = alienArray[x] + 1;
+    console.log('move right');
+    addAlien(x);
+  }
 }
 
-function addAlien() {
-  cells[alienPosition].classList.add('alien');
+function option3() {
+  for (let x = 0; x < alienArray.length; x++) {
+    removeAlien(x);
+    alienArray[x] = alienArray[x] + width;
+    console.log('move down');
+    addAlien(x);
+  }
 }
+function option4() {
+  for (let x = 0; x < alienArray.length; x++) {
+    dropBomb();
+    removeAlien(x);
+    alienArray[x] = alienArray[x] - 1;
+    console.log('move left');
+    addAlien(x);
+  }
+}
+
+// Need to run a bomb function on each enemey
+// I guess I can add on for each option
+// need to create a bomb class that moves as the laser does downwards
+
+function dropBomb() {
+  let chanceOfBomb = Math.floor(Math.random() * 100);
+  let bombSource = Math.floor(Math.random() * alienArray.length + 1);
+  let bombPosition = alienArray[bombSource];
+  if (chanceOfBomb === 32) {
+    const droppingBomb = setInterval(bombDropping, 200);
+    function bombDropping() {
+      console.log('bomb dropped');
+      console.log(bombPosition);
+      let y = Math.floor(bombPosition / width);
+      // case for bomb hitting boundary
+      if (y === 20) {
+        cells[bombPosition].classList.remove('bomb');
+        clearInterval(droppingBomb);
+
+        // the case for bomb hitting spaceship
+      } else if (
+        cells[bombPosition].classList.contains('spaceship') &&
+        cells[bombPosition].classList.contains('bomb')
+      ) {
+        clearInterval(droppingBomb);
+        console.log(`hit at ${bombPosition}`);
+        cells[bombPosition].classList.remove('bomb');
+        cells[bombPosition].classList.remove('spaceship');
+        // case for bomb moving
+      } else {
+        cells[bombPosition].classList.remove('bomb');
+        cells[bombPosition + width].classList.add('bomb');
+        bombPosition += width;
+      }
+    }
+    console.log('dropping bomb');
+  }
+}
+
+// function findCell(element) {
+//   cells[cells.findIndex(element)]
+// }
+
+startMovement.addEventListener('click', alienMovement);
+
+// function removeAlien(element) {
+//   alienArray[
+//     alienArray.findIndex((element) => element === element)
+//   ].classList.remove('alien');
+// }
+
+// function addAlien(element) {
+//   alienArray[
+//     alienArray.findIndex((element) => element === element)
+//   ].classList.add('alien');
+// }
+
+// function removeAlien() {
+//   cells[alienPosition].classList.remove('alien');
+// }
+
+// do I need a remove alien function that targest the cells[findindexof the value from alienArray]
+
+function removeAlien(i) {
+  cells[alienArray[i]].classList.remove('alien');
+}
+function addAlien(i) {
+  cells[alienArray[i]].classList.add('alien');
+}
+
+// need a function that checks through the gamegrid array, and checks for classList alien
+// if it does contain alien, needs to perform alienmotion function on it
+// alienArray.forEach((element) => element.classList.remove('alien'));
+// this command allows us to alter the divs tha the aliens occupy
+// need to be able to pass this into the alienMovement function somehow
+
+// above doesn't contribute anything
+
+// console.log(`this is ${alienArray[alienArray.findIndex(42)]}`);
+
+// console.log(alienArray.findIndex((element) => element === element));
+
+// What I need to be able to to
+// need to be able to for each cell, remove the classList alien
+// then I need to change the position of the cell by an increment
+// then I need to re add the classList alien
