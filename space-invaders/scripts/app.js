@@ -13,6 +13,8 @@ let alienArray = [
 
 let spaceshipPosition = 389;
 
+let gameStarted = false;
+
 // Grid creation
 // this also sets the starting locations of the aliens
 function createGrid() {
@@ -28,9 +30,6 @@ function createGrid() {
 }
 
 createGrid();
-
-const aliens = document.querySelectorAll('.alien');
-// let alienPosition = 50;
 
 // functions that can govern spaceship movement
 function addSpaceship() {
@@ -66,7 +65,53 @@ function handleKey(event) {
 addEventListener('keyup', handleKey);
 
 // the firing variable is used so that you can only fire one laser at a time
+// need to try and convert it to a for loop that has a timeout
 let firing = false;
+// All below is an attempt to do it without setInterval
+// function checkTimeOut(i) {
+//   console.log(i);
+// }
+
+// function setDelay() {
+//   for (let v = 0; v < 19; v++) {
+//     setTimeout(checkTimeOut(v), 3000);
+//   }
+// }
+
+// function fireLaser() {
+//   if (firing === false) {
+//     setDelay();
+
+//     console.log('firing');
+//   }
+// }
+
+// function LaserMoving() {
+//   console.log('laserMoving is working');
+//   let firePosition = spaceshipPosition;
+//   let y = Math.floor(firePosition / width);
+//   let alienIndex = alienArray.indexOf(firePosition);
+//   // case for laser hitting boundary
+//   if (y === 0) {
+//     cells[firePosition].classList.remove('laser');
+//     firing = false;
+//     return;
+//     // the case for laser hitting alien
+//   } else if (cells[firePosition].classList.contains('alien')) {
+//     console.log(`hit at ${firePosition}`);
+//     score.innerHTML = parseInt(score.innerHTML) + 5;
+//     cells[firePosition].classList.remove('laser');
+//     cells[firePosition].classList.remove('alien');
+//     alienArray.splice(alienIndex, 1);
+//     firing = false;
+//     return;
+//     // case for laser moving
+//   } else {
+//     cells[firePosition].classList.remove('laser');
+//     cells[firePosition - width].classList.add('laser');
+//     firePosition -= width;
+//   }
+// }
 
 function fireLaser() {
   let firePosition = spaceshipPosition;
@@ -113,31 +158,33 @@ function fireLaser() {
 // and then within the movement function I define the direction and cases for change of direction
 
 function alienMovement() {
-  const swarmStart = setInterval(moveAliens, 500);
-  function moveAliens() {
-    if (
-      alienArray.some((element) => Math.floor(element / width) === width - 1)
-    ) {
-      clearInterval(swarmStart);
-    } else if (
-      alienArray.some((element) => element % width === width - 1) === true &&
-      alienMotion === true
-    ) {
-      option1();
-      alienMotion = false;
-    } else if (alienMotion === true) {
-      option2();
-      console.log('option 2');
-    } else if (
-      alienArray.some((element) => element % width === 0) === true &&
-      alienMotion === false
-    ) {
-      option3();
-      alienMotion = true;
-      console.log('option 3');
-    } else if (alienMotion === false) {
-      option4();
-      console.log('option 4');
+  if (gameStarted === true) {
+    const swarmStart = setInterval(moveAliens, 500);
+    function moveAliens() {
+      if (
+        alienArray.some((element) => Math.floor(element / width) === width - 1)
+      ) {
+        clearInterval(swarmStart);
+      } else if (
+        alienArray.some((element) => element % width === width - 1) === true &&
+        alienMotion === true
+      ) {
+        option1();
+        alienMotion = false;
+      } else if (alienMotion === true) {
+        option2();
+        console.log('option 2');
+      } else if (
+        alienArray.some((element) => element % width === 0) === true &&
+        alienMotion === false
+      ) {
+        option3();
+        alienMotion = true;
+        console.log('option 3');
+      } else if (alienMotion === false) {
+        option4();
+        console.log('option 4');
+      }
     }
   }
 }
@@ -253,7 +300,12 @@ function dropBomb() {
 //   cells[cells.findIndex(element)]
 // }
 
-startMovement.addEventListener('click', alienMovement);
+function startGame() {
+  gameStarted = true;
+  alienMovement();
+}
+
+startMovement.addEventListener('click', startGame);
 
 // function removeAlien(element) {
 //   alienArray[

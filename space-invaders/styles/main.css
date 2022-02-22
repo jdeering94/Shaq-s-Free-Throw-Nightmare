@@ -24,13 +24,13 @@ body {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  height: 600px;
-  width: 600px;
+  height: 800px;
+  width: 800px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
 }
 
 .gamegrid div {
-  border: 1px solid lightgrey;
+  border: none;
   height: 5%;
   width: 5%;
 }
