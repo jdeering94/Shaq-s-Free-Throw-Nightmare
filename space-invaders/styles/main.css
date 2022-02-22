@@ -36,17 +36,27 @@ body {
 }
 
 .spaceship {
-  background-color: black;
+  background-image: url(../sprites/shaq-smile.jpeg);
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .laser {
-  background-color: aquamarine;
+  background-image: url(../sprites/steps_comm_sprite_basketball.png);
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .alien {
-  background-color: red;
+  background-image: url(../sprites/basketball\ hoop.png);
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .bomb {
   background-color: green;
+}
+
+.hidden {
+  display: none;
 }
