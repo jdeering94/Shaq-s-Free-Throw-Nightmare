@@ -2,7 +2,9 @@ const grid = document.querySelector('.gamegrid');
 const soundEffect = document.querySelector('.soundeffect');
 const startMovement = document.querySelector('button');
 const score = document.querySelector('.score');
+const finalscore = document.querySelector('.finalscore');
 const livesLeft = document.querySelector('#livesleft');
+const winner = document.querySelector('.winner');
 const width = 20;
 const gridCellCount = width * width;
 const cells = [];
@@ -12,6 +14,9 @@ let alienArray = [
   134,
 ];
 
+let logoArray = [342, 343, 344, 346, 347, 348, 351, 352, 353, 355, 356, 357];
+
+winner.classList.add('hidden');
 livesLeft.innerHTML = lifeArray.length;
 
 let spaceshipPosition = 369;
@@ -25,6 +30,8 @@ function createGrid() {
     const cell = document.createElement('div');
     if (alienArray.includes(i)) {
       cell.classList.add('alien');
+    } else if (logoArray.includes(i)) {
+      cell.classList.add('barrier');
     }
     cell.setAttribute('data-id', i);
     cells.push(cell);
@@ -73,6 +80,7 @@ addEventListener('keyup', handleKey);
 
 // the firing variable is used so that you can only fire one laser at a time
 let firing = false;
+let firingId;
 
 function fireLaser() {
   let firePosition = spaceshipPosition;
@@ -81,7 +89,7 @@ function fireLaser() {
   if (firing === false) {
     soundEffect.src = '../sounds/catching-basketball.wav';
     soundEffect.play();
-    const firingId = setInterval(LaserMoving, 50);
+    firingId = setInterval(LaserMoving, 50);
     function LaserMoving() {
       let y = Math.floor(firePosition / width);
       let alienIndex = alienArray.indexOf(firePosition);
@@ -118,12 +126,16 @@ function fireLaser() {
         clearInterval(motherShipLoop);
         mothershipPresent = false;
         firing = false;
-      } else if (cells[firePosition].classList.contains('bomb')) {
+      } else if (
+        cells[firePosition].classList.contains('bomb') &&
+        cells[firePosition].classList.contains('laser')
+      ) {
         cells[firePosition].classList.remove('laser');
         cells[firePosition].classList.remove('bomb');
         clearInterval(droppingBomb);
         clearInterval(firingId);
         firing = false;
+        bomb = false;
       } else {
         cells[firePosition].classList.remove('laser');
         cells[firePosition - width].classList.add('laser');
@@ -141,7 +153,7 @@ let swarmStart;
 
 function alienMovement() {
   if (gameStarted === true) {
-    swarmStart = setInterval(moveAliens, 500);
+    swarmStart = setInterval(moveAliens, 750);
   }
 }
 
@@ -216,22 +228,24 @@ function moveLeft() {
 // need to create a bomb class that moves as the laser goes downwards
 
 let droppingBomb;
+let bomb = false;
 
 function dropBomb() {
   let chanceOfBomb = Math.floor(Math.random() * 50);
   let bombSource = Math.floor(Math.random() * alienArray.length + 1);
   let bombPosition = alienArray[bombSource];
-  if (chanceOfBomb === 32) {
-    droppingBomb = setInterval(bombDropping, 200);
+  if (chanceOfBomb === 32 && bomb === false) {
+    droppingBomb = setInterval(bombDropping, 300);
     function bombDropping() {
-      console.log(`bomb dropped at ${bombPosition}`);
       let y = Math.floor(bombPosition / width);
+      bomb = true;
       if (
         cells[bombPosition].classList.contains('spaceship') &&
         cells[bombPosition].classList.contains('bomb')
       ) {
         clearInterval(droppingBomb);
         cells[bombPosition].classList.remove('bomb');
+        bomb = false;
         gameOver();
         // case for bomb moving
       } else if (
@@ -240,16 +254,25 @@ function dropBomb() {
       ) {
         clearInterval(droppingBomb);
         cells[bombPosition].classList.remove('bomb');
+        bomb = false;
       } else if (y === width) {
         cells[bombPosition].classList.remove('bomb');
         clearInterval(droppingBomb);
+        bomb = false;
+      } else if (
+        cells[bombPosition].classList.contains('barrier') &&
+        cells[bombPosition].classList.contains('bomb')
+      ) {
+        cells[bombPosition].classList.remove('barrier');
+        cells[bombPosition].classList.remove('bomb');
+        clearInterval(droppingBomb);
+        bomb = false;
       } else {
         cells[bombPosition].classList.remove('bomb');
         bombPosition += width;
         cells[bombPosition].classList.add('bomb');
       }
     }
-    console.log('dropping bomb');
   }
 }
 
@@ -272,11 +295,12 @@ function addAlien(i) {
 }
 
 function winScreen() {
-  console.log('WINNER');
   clearInterval(swarmStart);
-  grid.classList.add('hidden');
+
   grid.classList.add('winscreen');
+  winner.classList.remove('hidden');
   gameStarted = false;
+  finalscore.innerHTML = score.innerHTML;
 }
 
 function gameOver() {
@@ -298,11 +322,11 @@ let mothershipPresent = false;
 let motherPosition;
 
 function addMothership() {
-  let mothershipCheck = Math.floor(Math.random() * 5);
+  let mothershipCheck = Math.floor(Math.random() * 100);
   if (mothershipCheck === 3 && mothershipPresent === false) {
     mothershipPresent = true;
     motherPosition = width;
-    motherShipLoop = setInterval(mothershipTravel, 1000);
+    motherShipLoop = setInterval(mothershipTravel, 500);
   }
 }
 function mothershipTravel() {

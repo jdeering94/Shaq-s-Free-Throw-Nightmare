@@ -6,6 +6,7 @@ body {
   height: 100vh;
   margin: 0;
   color: aliceblue;
+  background-image: linear-gradient(90deg, yellow, purple);
 }
 
 .header {
@@ -13,7 +14,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), */
     url(../sprites/shaq-header.jpeg);
   background-repeat: no-repeat;
   background-size: cover;
@@ -24,7 +25,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url(../sprites/staples-centre.jpeg);
+  /* background-image: url(../sprites/staples-centre.jpeg); */
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -78,13 +79,15 @@ body {
   background-size: contain;
 }
 
-.hidden {
-  display: none;
+.barrier {
+  background-image: url(../sprites/laker-logo.png);
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .winscreen {
-  background-color: yellow;
-  background-image: url(../sprites/shaq-trophies.jpeg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(../sprites/shaq-trophies.jpeg);
   background-size: cover;
   display: block;
 }
@@ -98,4 +101,19 @@ body {
 .footer {
   display: flex;
   height: 20vh;
+}
+
+.gamegrid h1 {
+  position: absolute;
+  margin: 0;
+  display: none;
+}
+
+.winner {
+  position: absolute;
+  display: block;
+}
+
+.hidden {
+  display: none;
 }
