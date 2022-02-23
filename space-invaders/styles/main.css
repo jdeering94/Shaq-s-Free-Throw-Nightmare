@@ -5,6 +5,7 @@
 body {
   height: 100vh;
   margin: 0;
+  color: aliceblue;
 }
 
 .header {
@@ -12,12 +13,20 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(../sprites/shaq-header.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .gamegrid-wrapper {
-  height: 90vh;
+  height: 800px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-image: url(../sprites/staples-centre.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .gamegrid {
@@ -27,6 +36,10 @@ body {
   height: 800px;
   width: 800px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(../sprites/Laker-court.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .gamegrid div {
@@ -36,7 +49,7 @@ body {
 }
 
 .spaceship {
-  background-image: url(../sprites/shaq-smile.jpeg);
+  background-image: url(../sprites/shaq-smile.png);
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -50,13 +63,39 @@ body {
 .alien {
   background-image: url(../sprites/basketball\ hoop.png);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
+  background-position-y: center;
+  background-position-x: center;
 }
 
 .bomb {
   background-color: green;
 }
 
+.mothership {
+  background-image: url(../sprites/dwight-howard-superman.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 .hidden {
   display: none;
+}
+
+.winscreen {
+  background-color: yellow;
+  background-image: url(../sprites/shaq-trophies.jpeg);
+  background-size: cover;
+  display: block;
+}
+
+.lossscreen {
+  background-color: purple;
+  background-image: none;
+  display: block;
+}
+
+.footer {
+  display: flex;
+  height: 20vh;
 }
