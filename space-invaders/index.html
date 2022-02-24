@@ -4,8 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Wallpoet&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles/main.css">
-    <title>Space Invaders</title>
+    <title>Shaq's Nightmare</title>
     </div>
   </head>
   <body>
@@ -13,17 +17,24 @@
       <h1>Shaq's Free Throw Nightmare</h1>
       
       <audio class="soundeffect" src=""></audio>
+      <audio class="soundtrack" src="./sounds/Barkley-soundtrack.mp3"></audio>
+      <audio class="bombsound" src=""></audio>
+      <audio class="mothershipsound" src="./sounds/Superman Theme.mp3"></audio>
     </div>
     
     <div class="gamegrid-wrapper">
-      <div class="sidebar"> <button>Start Movement</button>
-      <h2 class="score">0</h2>
-      <h2>Lives Left : <span id="livesleft"></span></h2>
+      <div class="sidebar"> <button>Start Game</button> <button id="reset">Reset</button>
+      <h2>Score: <span class="score">0</span></h2>
+      <h2>Lives Left: <span id="livesleft"></span></h2>
+      <h2>Waves Left: <span id="wavesleft"></span></h2>
+      <p>Use Left and Right Arrow keys <br> to move Shaq <br>Use Z to make Buckets <br> 
+        Avoid Charles Barkley's Negativity! <br>Buckets Are Worth 20 points each <br>300 If You Hit Dwight Howard!</p>
     </div>
       <div class="gamegrid">
         
       </div>
-      <h1 class = "winner">Shaq's Nightmare is over! Your final score is: <span class="finalscore"></span></h1>
+      <div class="endscreen"> <h1 class = "finalscreen"><span class="finalscore"></span></h1></div>
+      
       </div>
       <div class="footer"></div>
       <script src="./scripts/app.js"></script>

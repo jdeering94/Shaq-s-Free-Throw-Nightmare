@@ -1,10 +1,15 @@
 const grid = document.querySelector('.gamegrid');
 const soundEffect = document.querySelector('.soundeffect');
 const startMovement = document.querySelector('button');
+const reset = document.querySelector('#reset');
 const score = document.querySelector('.score');
-const finalscore = document.querySelector('.finalscore');
 const livesLeft = document.querySelector('#livesleft');
-const winner = document.querySelector('.winner');
+const finalscreen = document.querySelector('.finalscreen');
+const soundtrack = document.querySelector('.soundtrack');
+const bombsound = document.querySelector('.bombsound');
+const mothershipsound = document.querySelector('.mothershipsound');
+const endscreen = document.querySelector('.endscreen');
+const wavesLeft = document.querySelector('#wavesleft');
 const width = 20;
 const gridCellCount = width * width;
 const cells = [];
@@ -14,14 +19,21 @@ let alienArray = [
   134,
 ];
 
+let wavesArray = [1, 2];
+
 let logoArray = [342, 343, 344, 346, 347, 348, 351, 352, 353, 355, 356, 357];
 
-winner.classList.add('hidden');
+let alienSpeed = 1000;
+
+finalscreen.classList.add('hidden');
 livesLeft.innerHTML = lifeArray.length;
+wavesLeft.innerHTML = wavesArray.length + 1;
 
 let spaceshipPosition = 369;
 
 let gameStarted = false;
+let canMove = false;
+let alienWin = false;
 
 // Grid creation
 // this also sets the starting locations of the aliens
@@ -55,7 +67,7 @@ addSpaceship();
 
 function handleKey(event) {
   let x = spaceshipPosition % width;
-  if (gameStarted === true) {
+  if (canMove === true) {
     removeSpaceship();
     switch (event.keyCode) {
       case 39:
@@ -89,7 +101,7 @@ function fireLaser() {
   if (firing === false) {
     soundEffect.src = '../sounds/catching-basketball.wav';
     soundEffect.play();
-    firingId = setInterval(LaserMoving, 50);
+    firingId = setInterval(LaserMoving, 100);
     function LaserMoving() {
       let y = Math.floor(firePosition / width);
       let alienIndex = alienArray.indexOf(firePosition);
@@ -102,7 +114,7 @@ function fireLaser() {
       } else if (cells[firePosition].classList.contains('alien')) {
         clearInterval(firingId);
         console.log(`hit at ${firePosition}`);
-        score.innerHTML = parseInt(score.innerHTML) + 5;
+        score.innerHTML = parseInt(score.innerHTML) + 20;
         soundEffect.src =
           '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
         soundEffect.play();
@@ -117,25 +129,22 @@ function fireLaser() {
       ) {
         clearInterval(firingId);
         console.log(`hit at ${firePosition}`);
-        score.innerHTML = parseInt(score.innerHTML) + 50;
+        score.innerHTML = parseInt(score.innerHTML) + 300;
         soundEffect.src =
           '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
         soundEffect.play();
         cells[firePosition].classList.remove('laser');
         cells[firePosition].classList.remove('mothership');
         clearInterval(motherShipLoop);
+        mothershipsound.pause();
         mothershipPresent = false;
         firing = false;
       } else if (
         cells[firePosition].classList.contains('bomb') &&
         cells[firePosition].classList.contains('laser')
       ) {
-        cells[firePosition].classList.remove('laser');
-        cells[firePosition].classList.remove('bomb');
-        clearInterval(droppingBomb);
         clearInterval(firingId);
         firing = false;
-        bomb = false;
       } else {
         cells[firePosition].classList.remove('laser');
         cells[firePosition - width].classList.add('laser');
@@ -148,24 +157,22 @@ function fireLaser() {
 }
 
 // Below is for alien swarm movement
-// It still speeds up whenever laser is fired
 let swarmStart;
 
 function alienMovement() {
   if (gameStarted === true) {
-    swarmStart = setInterval(moveAliens, 750);
+    swarmStart = setInterval(moveAliens, alienSpeed);
   }
 }
 
 function moveAliens() {
   if (alienArray.length === 0) {
-    clearInterval(swarmStart);
     winScreen();
   } else if (
-    alienArray.some((element) => Math.floor(element / width) === width - 1)
+    alienArray.some((element) => Math.floor(element / width) === width - 2)
   ) {
-    clearInterval(swarmStart);
-    console.log('Game Over');
+    alienWin = true;
+    gameOver();
   } else if (
     alienArray.some((element) => element % width === width - 1) === true &&
     alienMotion === true
@@ -174,6 +181,7 @@ function moveAliens() {
     alienMotion = false;
   } else if (alienMotion === true) {
     moveRight();
+    dropBomb();
   } else if (
     alienArray.some((element) => element % width === 0) === true &&
     alienMotion === false
@@ -182,6 +190,7 @@ function moveAliens() {
     alienMotion = true;
   } else if (alienMotion === false) {
     moveLeft();
+    dropBomb();
   }
 }
 
@@ -197,81 +206,74 @@ function moveDown() {
   for (let x = 0; x < alienArray.length; x++) {
     removeAlien(x);
     alienArray[x] = alienArray[x] + width;
-    console.log('move down');
     addAlien(x);
   }
 }
 function moveRight() {
   for (let x = 0; x < alienArray.length; x++) {
-    dropBomb();
     addMothership();
     removeAlien(x);
     alienArray[x] = alienArray[x] + 1;
-    console.log('move right');
     addAlien(x);
   }
 }
 
 function moveLeft() {
   for (let x = 0; x < alienArray.length; x++) {
-    dropBomb();
     addMothership();
     removeAlien(x);
     alienArray[x] = alienArray[x] - 1;
-    console.log('move left');
     addAlien(x);
   }
 }
 
-// Need to run a bomb function on each enemey
-// I guess I can add on for each option
-// need to create a bomb class that moves as the laser goes downwards
-
-let droppingBomb;
-let bomb = false;
+let bombArray = [];
 
 function dropBomb() {
-  let chanceOfBomb = Math.floor(Math.random() * 50);
-  let bombSource = Math.floor(Math.random() * alienArray.length + 1);
+  let chanceOfBomb = Math.floor(Math.random() * 5);
+  let bombSource = Math.floor(Math.random() * alienArray.length);
   let bombPosition = alienArray[bombSource];
-  if (chanceOfBomb === 32 && bomb === false) {
-    droppingBomb = setInterval(bombDropping, 300);
-    function bombDropping() {
-      let y = Math.floor(bombPosition / width);
-      bomb = true;
-      if (
-        cells[bombPosition].classList.contains('spaceship') &&
-        cells[bombPosition].classList.contains('bomb')
-      ) {
-        clearInterval(droppingBomb);
-        cells[bombPosition].classList.remove('bomb');
-        bomb = false;
-        gameOver();
-        // case for bomb moving
-      } else if (
-        cells[bombPosition].classList.contains('laser') &&
-        cells[bombPosition].classList.contains('bomb')
-      ) {
-        clearInterval(droppingBomb);
-        cells[bombPosition].classList.remove('bomb');
-        bomb = false;
-      } else if (y === width) {
-        cells[bombPosition].classList.remove('bomb');
-        clearInterval(droppingBomb);
-        bomb = false;
-      } else if (
-        cells[bombPosition].classList.contains('barrier') &&
-        cells[bombPosition].classList.contains('bomb')
-      ) {
-        cells[bombPosition].classList.remove('barrier');
-        cells[bombPosition].classList.remove('bomb');
-        clearInterval(droppingBomb);
-        bomb = false;
-      } else {
-        cells[bombPosition].classList.remove('bomb');
-        bombPosition += width;
-        cells[bombPosition].classList.add('bomb');
-      }
+
+  if (chanceOfBomb === 4) {
+    bombsound.src = './sounds/barkley-turrible.mp3';
+    bombsound.play();
+    bombArray.push(bombPosition);
+    cells[bombPosition].classList.add('alien');
+  }
+}
+setInterval(bombDropping, 350);
+
+function bombDropping() {
+  for (let i = 0; i < bombArray.length; i++) {
+    if (
+      cells[bombArray[i]].classList.contains('spaceship') &&
+      cells[bombArray[i]].classList.contains('bomb')
+    ) {
+      cells[bombArray[i]].classList.remove('bomb');
+      bombArray.splice(i, 1);
+      gameOver();
+    } else if (
+      cells[bombArray[i]].classList.contains('laser') &&
+      cells[bombArray[i]].classList.contains('bomb')
+    ) {
+      cells[bombArray[i]].classList.remove('bomb');
+      cells[bombArray[i]].classList.remove('laser');
+      bombArray.splice(i, 1);
+      console.log('hit by ball');
+    } else if (Math.floor(bombArray[i] / width) === width - 1) {
+      cells[bombArray[i]].classList.remove('bomb');
+      bombArray.splice(i, 1);
+    } else if (
+      cells[bombArray[i]].classList.contains('barrier') &&
+      cells[bombArray[i]].classList.contains('bomb')
+    ) {
+      cells[bombArray[i]].classList.remove('barrier');
+      cells[bombArray[i]].classList.remove('bomb');
+      bombArray.splice(i, 1);
+    } else {
+      cells[bombArray[i]].classList.remove('bomb');
+      bombArray[i] += width;
+      cells[bombArray[i]].classList.add('bomb');
     }
   }
 }
@@ -280,12 +282,20 @@ function startGame() {
   if (gameStarted === false) {
     gameStarted = true;
     alienMovement();
+    canMove = true;
+    soundtrack.play();
   } else {
     console.log('game is running');
   }
 }
 
 startMovement.addEventListener('click', startGame);
+
+function resetGame() {
+  location.reload();
+}
+
+reset.addEventListener('click', resetGame);
 
 function removeAlien(i) {
   cells[alienArray[i]].classList.remove('alien');
@@ -294,39 +304,55 @@ function addAlien(i) {
   cells[alienArray[i]].classList.add('alien');
 }
 
+// game win/loss evaluations
 function winScreen() {
-  clearInterval(swarmStart);
-
-  grid.classList.add('winscreen');
-  winner.classList.remove('hidden');
-  gameStarted = false;
-  finalscore.innerHTML = score.innerHTML;
+  if (wavesArray.length === 0) {
+    clearInterval(swarmStart);
+    grid.classList.add('hidden');
+    finalscreen.classList.remove('hidden');
+    endscreen.classList.add('winscreen');
+    gameStarted = false;
+    finalscreen.innerHTML = `The Nightmare is over! \n Your Final Score is: ${score.innerHTML}`;
+  } else {
+    wavesArray.splice(0, 1);
+    newWave();
+    wavesLeft.innerHTML = wavesArray.length + 1;
+  }
 }
 
 function gameOver() {
   if (lifeArray.length === 0) {
-    console.log('LOSER');
-    clearInterval(swarmStart);
-    gameStarted = false;
-    grid.classList.add('hidden');
-    grid.classList.add('lossscreen');
+    gameIsLost();
+  } else if (alienWin === true) {
+    gameIsLost();
   } else {
     loseLife();
   }
 }
 
-// want to try and add a mothership
+function gameIsLost() {
+  clearInterval(swarmStart);
+  gameStarted = false;
+  grid.classList.add('hidden');
+  finalscreen.classList.remove('hidden');
+  endscreen.classList.add('lossscreen');
+  finalscreen.innerHTML = `The Nightmare continues...\nYour Final Score is: ${score.innerHTML}`;
+  soundtrack.pause();
+}
+
+// mothership function
 
 let motherShipLoop;
 let mothershipPresent = false;
 let motherPosition;
 
 function addMothership() {
-  let mothershipCheck = Math.floor(Math.random() * 100);
+  let mothershipCheck = Math.floor(Math.random() * 300);
   if (mothershipCheck === 3 && mothershipPresent === false) {
     mothershipPresent = true;
     motherPosition = width;
-    motherShipLoop = setInterval(mothershipTravel, 500);
+    mothershipsound.play();
+    motherShipLoop = setInterval(mothershipTravel, 300);
   }
 }
 function mothershipTravel() {
@@ -335,6 +361,7 @@ function mothershipTravel() {
     mothershipPresent = false;
     console.log(mothershipPresent);
     clearInterval(motherShipLoop);
+    mothershipsound.pause();
   } else {
     cells[motherPosition].classList.remove('mothership');
     motherPosition += 1;
@@ -342,11 +369,26 @@ function mothershipTravel() {
   }
 }
 
-// need to implement lives now- 3 lives, everytime you get hit you lose one
-// 0 lives left it means game over
-
 function loseLife() {
-  console.log('shaq got hit');
   lifeArray.splice(0, 1);
+  canMove = false;
+  cells[spaceshipPosition].classList.add('shaqhit');
+  bombsound.src = '../sounds/shaq-why2.aiff';
+  bombsound.play();
+  setTimeout(hitShaq, 500);
   livesLeft.innerHTML = lifeArray.length;
+}
+
+function hitShaq() {
+  cells[spaceshipPosition].classList.remove('shaqhit');
+  canMove = true;
+}
+
+function newWave() {
+  alienArray = [
+    44, 46, 48, 50, 52, 54, 83, 85, 87, 89, 91, 93, 95, 124, 126, 128, 130, 132,
+    134,
+  ];
+  alienSpeed -= 250;
+  console.log(alienSpeed);
 }
