@@ -117,7 +117,7 @@ function fireLaser() {
         clearInterval(firingId);
         score.innerHTML = parseInt(score.innerHTML) + 20;
         soundEffect.src =
-          './sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
+          '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
         soundEffect.play();
         cells[firePosition].classList.remove('laser');
         cells[firePosition].classList.remove('alien');
@@ -131,7 +131,7 @@ function fireLaser() {
         clearInterval(firingId);
         score.innerHTML = parseInt(score.innerHTML) + 300;
         soundEffect.src =
-          './sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
+          '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
         soundEffect.play();
         cells[firePosition].classList.remove('laser');
         cells[firePosition].classList.remove('mothership');
@@ -236,7 +236,7 @@ function dropBomb() {
   let bombPosition = alienArray[bombSource];
 
   if (chanceOfBomb === 3) {
-    bombsound.src = './sounds/barkley-turrible.mp3';
+    bombsound.src = '../sounds/barkley-turrible.mp3';
     bombsound.play();
     bombArray.push(bombPosition);
     cells[bombPosition].classList.add('alien');
@@ -336,7 +336,7 @@ function gameIsLost() {
   finalscreen.innerHTML = `The Nightmare continues...\nYour Final Score is: ${score.innerHTML}`;
   soundtrack.pause();
   mothershipsound.pause();
-  soundEffect.src = './sounds/mixkit-basketball-buzzer-1647.wav';
+  soundEffect.src = '../sounds/mixkit-basketball-buzzer-1647.wav';
   soundEffect.play();
 }
 
@@ -358,7 +358,7 @@ function addMothership() {
 function mothershipTravel() {
   if (motherPosition === 2 * width - 2) {
     soundEffect.src =
-      './sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
+      '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
     soundEffect.play();
     cells[motherPosition].classList.remove('mothership');
     mothershipPresent = false;
@@ -376,7 +376,7 @@ function loseLife() {
   lifeArray.splice(0, 1);
   canMove = false;
   cells[spaceshipPosition].classList.add('shaqhit');
-  bombsound.src = './sounds/shaq-why2.aiff';
+  bombsound.src = '../sounds/shaq-why2.aiff';
   bombsound.play();
   setTimeout(hitShaq, 500);
   livesLeft.innerHTML = lifeArray.length;
