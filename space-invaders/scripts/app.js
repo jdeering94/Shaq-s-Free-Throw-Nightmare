@@ -312,6 +312,7 @@ function winScreen() {
     finalscreen.classList.remove('hidden');
     endscreen.classList.add('winscreen');
     gameStarted = false;
+    mothershipsound.pause();
     finalscreen.innerHTML = `The Nightmare is over! \n Your Final Score is: ${score.innerHTML}`;
   } else {
     wavesArray.splice(0, 1);
@@ -338,6 +339,9 @@ function gameIsLost() {
   endscreen.classList.add('lossscreen');
   finalscreen.innerHTML = `The Nightmare continues...\nYour Final Score is: ${score.innerHTML}`;
   soundtrack.pause();
+  mothershipsound.pause();
+  soundEffect.src = './sounds/mixkit-basketball-buzzer-1647.wav';
+  soundEffect.play();
 }
 
 // mothership function
