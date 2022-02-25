@@ -1,3 +1,4 @@
+// DOM elements
 const grid = document.querySelector('.gamegrid');
 const soundEffect = document.querySelector('.soundeffect');
 const startMovement = document.querySelector('button');
@@ -10,6 +11,8 @@ const bombsound = document.querySelector('.bombsound');
 const mothershipsound = document.querySelector('.mothershipsound');
 const endscreen = document.querySelector('.endscreen');
 const wavesLeft = document.querySelector('#wavesleft');
+
+// variables and arrays
 const width = 20;
 const gridCellCount = width * width;
 const cells = [];
@@ -18,22 +21,18 @@ let alienArray = [
   44, 46, 48, 50, 52, 54, 83, 85, 87, 89, 91, 93, 95, 124, 126, 128, 130, 132,
   134,
 ];
-
 let wavesArray = [1, 2];
-
 let logoArray = [342, 343, 344, 346, 347, 348, 351, 352, 353, 355, 356, 357];
-
-let alienSpeed = 1000;
+let sideHoopArray = [39];
+let alienSpeed = 750;
+let spaceshipPosition = 369;
+let gameStarted = false;
+let canMove = false;
+let alienWin = false;
 
 finalscreen.classList.add('hidden');
 livesLeft.innerHTML = lifeArray.length;
 wavesLeft.innerHTML = wavesArray.length + 1;
-
-let spaceshipPosition = 369;
-
-let gameStarted = false;
-let canMove = false;
-let alienWin = false;
 
 // Grid creation
 // this also sets the starting locations of the aliens
@@ -44,6 +43,8 @@ function createGrid() {
       cell.classList.add('alien');
     } else if (logoArray.includes(i)) {
       cell.classList.add('barrier');
+    } else if (sideHoopArray.includes(i)) {
+      cell.classList.add('sidehoop');
     }
     cell.setAttribute('data-id', i);
     cells.push(cell);
@@ -94,9 +95,10 @@ addEventListener('keyup', handleKey);
 let firing = false;
 let firingId;
 
+// the improvement to this function is to make it work using arrays
+// crate a laser array-then a for loop that evaluates each position of the array
 function fireLaser() {
   let firePosition = spaceshipPosition;
-  console.log(firePosition);
 
   if (firing === false) {
     soundEffect.src = '../sounds/catching-basketball.wav';
@@ -113,7 +115,6 @@ function fireLaser() {
         // the case for laser hitting alien
       } else if (cells[firePosition].classList.contains('alien')) {
         clearInterval(firingId);
-        console.log(`hit at ${firePosition}`);
         score.innerHTML = parseInt(score.innerHTML) + 20;
         soundEffect.src =
           '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
@@ -128,7 +129,6 @@ function fireLaser() {
         cells[firePosition].classList.contains('laser')
       ) {
         clearInterval(firingId);
-        console.log(`hit at ${firePosition}`);
         score.innerHTML = parseInt(score.innerHTML) + 300;
         soundEffect.src =
           '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
@@ -152,7 +152,6 @@ function fireLaser() {
       }
     }
     firing = true;
-    console.log('firing');
   }
 }
 
@@ -194,13 +193,7 @@ function moveAliens() {
   }
 }
 
-// bug was caused by spacebar interacting with the button ater it is clicked
-
 let alienMotion = true;
-
-// main issue at the moment is to be able to loop through the entire array for options 1 and 3
-// at the moment it only adjusts for one block, instead of the whole array
-// maybe I can write a foreach function to perform on option 1 and 3? then changes the alienMotion to true or false and it keeps going?
 
 function moveDown() {
   for (let x = 0; x < alienArray.length; x++) {
@@ -227,14 +220,22 @@ function moveLeft() {
   }
 }
 
+function removeAlien(i) {
+  cells[alienArray[i]].classList.remove('alien');
+}
+function addAlien(i) {
+  cells[alienArray[i]].classList.add('alien');
+}
+
+// section governs the bomb functionality
 let bombArray = [];
 
 function dropBomb() {
-  let chanceOfBomb = Math.floor(Math.random() * 5);
+  let chanceOfBomb = Math.floor(Math.random() * 4);
   let bombSource = Math.floor(Math.random() * alienArray.length);
   let bombPosition = alienArray[bombSource];
 
-  if (chanceOfBomb === 4) {
+  if (chanceOfBomb === 3) {
     bombsound.src = './sounds/barkley-turrible.mp3';
     bombsound.play();
     bombArray.push(bombPosition);
@@ -259,7 +260,6 @@ function bombDropping() {
       cells[bombArray[i]].classList.remove('bomb');
       cells[bombArray[i]].classList.remove('laser');
       bombArray.splice(i, 1);
-      console.log('hit by ball');
     } else if (Math.floor(bombArray[i] / width) === width - 1) {
       cells[bombArray[i]].classList.remove('bomb');
       bombArray.splice(i, 1);
@@ -278,6 +278,7 @@ function bombDropping() {
   }
 }
 
+// this is to start game on the button click
 function startGame() {
   if (gameStarted === false) {
     gameStarted = true;
@@ -297,23 +298,18 @@ function resetGame() {
 
 reset.addEventListener('click', resetGame);
 
-function removeAlien(i) {
-  cells[alienArray[i]].classList.remove('alien');
-}
-function addAlien(i) {
-  cells[alienArray[i]].classList.add('alien');
-}
-
 // game win/loss evaluations
 function winScreen() {
   if (wavesArray.length === 0) {
+    wavesLeft.innerHTML = wavesArray.length;
     clearInterval(swarmStart);
     grid.classList.add('hidden');
     finalscreen.classList.remove('hidden');
     endscreen.classList.add('winscreen');
     gameStarted = false;
     mothershipsound.pause();
-    finalscreen.innerHTML = `The Nightmare is over! \n Your Final Score is: ${score.innerHTML}`;
+    let finalScore = parseInt(score.innerHTML) + lifeArray.length * 100;
+    finalscreen.innerHTML = `The Nightmare is over! \n Your Final Score is: ${finalScore}`;
   } else {
     wavesArray.splice(0, 1);
     newWave();
@@ -356,14 +352,16 @@ function addMothership() {
     mothershipPresent = true;
     motherPosition = width;
     mothershipsound.play();
-    motherShipLoop = setInterval(mothershipTravel, 300);
+    motherShipLoop = setInterval(mothershipTravel, 275);
   }
 }
 function mothershipTravel() {
-  if (motherPosition === 2 * width - 1) {
+  if (motherPosition === 2 * width - 2) {
+    soundEffect.src =
+      '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
+    soundEffect.play();
     cells[motherPosition].classList.remove('mothership');
     mothershipPresent = false;
-    console.log(mothershipPresent);
     clearInterval(motherShipLoop);
     mothershipsound.pause();
   } else {
@@ -373,6 +371,7 @@ function mothershipTravel() {
   }
 }
 
+// life points functions
 function loseLife() {
   lifeArray.splice(0, 1);
   canMove = false;
@@ -388,6 +387,7 @@ function hitShaq() {
   canMove = true;
 }
 
+// function to refresh the wave
 function newWave() {
   alienArray = [
     44, 46, 48, 50, 52, 54, 83, 85, 87, 89, 91, 93, 95, 124, 126, 128, 130, 132,

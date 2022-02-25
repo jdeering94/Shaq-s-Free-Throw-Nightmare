@@ -5,7 +5,7 @@
 body {
   height: 100vh;
   margin: 0;
-  color: purple;
+  color: yellow;
   background-image: linear-gradient(90deg, yellow, purple);
   font-family: 'Bungee Shade', cursive;
 }
@@ -19,6 +19,7 @@ body {
   /* url(../sprites/shaq-header.jpeg); */
   background-repeat: no-repeat;
   background-size: cover;
+  color: purple;
 }
 
 .gamegrid-wrapper {
@@ -26,7 +27,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-image: url(../sprites/staples-centre.jpeg); */
+  background-image: url(../sprites/staples-centre.jpeg),
+    linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -128,8 +130,8 @@ body {
 button {
   padding: 20px;
   font-family: 'Bungee Shade', cursive;
-  background-color: rgb(163, 7, 163);
-  color: rgba(255, 255, 0, 0.842);
+  background-color: yellow;
+  color: purple;
   border-radius: 5px solid;
   font-size: 25px;
   box-shadow: inset;
@@ -155,6 +157,13 @@ button {
 
 .shaqhit {
   background-image: url(../sprites/ShaqHit.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.sidehoop {
+  background-image: url(../sprites/hoop-side.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position-x: center;
