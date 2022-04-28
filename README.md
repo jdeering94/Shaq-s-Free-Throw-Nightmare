@@ -8,6 +8,14 @@ Shaq's Free Throw Nightmare is meant to be a version of space invaders. This was
 
 **LINK**
 
+https://jdeering94.github.io/Shaq-s-Free-Throw-Nightmare/
+
+# Site Overview
+
+<p>
+<img src="./assets/shaq-startscreen.png" />
+</p>
+
 # The Brief
 
 Using HTML, CSS, and Javascript, recreate an old grid-based arcade game.
@@ -43,3 +51,7 @@ With my MVP, I wanted to add more styling to it, and also to add some stretch go
 # Day 6
 
 Spent most of the day adding sound effects that would trigger on certain functions firing, mainly collisions, and alos a soundtrack that plays when the game is running. I also added a life counter to the game, a simple array, and also a function that refreshes the alien swarm for a set number of waves, with each eave increasing in speed. I was able to get this working by making the interval speed a variable that I would access everytime the swarm resets, for a total of two resets or three waves. I also reworked my bomb function, making use of a bombArray so that there could be multiple on screen. It was a mistake to reuse the laser logic, and in retrospect I should have based it off of the function to move the swarm. Since the logic was there, it was a fairly straghtforward process to change the function to run off of for loops operating on the bombArray, so that the position of each bomb is always known. This approach also fixed all the collision issues I was having and finally I was able to have multiple bombs dropping onscreen and interacting with the different elements of laser, barrier, and spaceship.
+
+### Wireframes:
+
+## Major Hurdles
