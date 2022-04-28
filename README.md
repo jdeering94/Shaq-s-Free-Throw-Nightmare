@@ -14,9 +14,12 @@ https://jdeering94.github.io/Shaq-s-Free-Throw-Nightmare/
 
 <p>
 <img src="./assets/shaq-startscreen.png" />
-<img src="./assets/shaq-gameplay.gif" />
-</p>
 
+</p>
+<p align="center">
+<img src="./assets/shaq-gameplay.gif" width = "47%" />
+<img src="./assets/shaq-hit.gif" width="47%"/>
+</p>
 # The Brief
 
 Using HTML, CSS, and Javascript, recreate an old grid-based arcade game.
