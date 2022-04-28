@@ -14,6 +14,7 @@ https://jdeering94.github.io/Shaq-s-Free-Throw-Nightmare/
 
 <p>
 <img src="./assets/shaq-startscreen.png" />
+<img src="./assets/shaq-gameplay.gif" />
 </p>
 
 # The Brief
