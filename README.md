@@ -25,7 +25,7 @@ The player's score should be displayed at the end of the game.
 
 </p>
 <p align="center">
-<img src="./assets/shaq-gameplay.gif" width = "47%" height = "80%" />
+<img src="./assets/shaq-gameplay.gif" width = "47%" height = "353px" />
 <img src="./assets/shaq-hit.gif" width="47%"/>
 </p>
 
