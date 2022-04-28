@@ -57,6 +57,6 @@ With my MVP, I wanted to add more styling to it, and also to add some stretch go
 
 Spent most of the day adding sound effects that would trigger on certain functions firing, mainly collisions, and alos a soundtrack that plays when the game is running. I also added a life counter to the game, a simple array, and also a function that refreshes the alien swarm for a set number of waves, with each eave increasing in speed. I was able to get this working by making the interval speed a variable that I would access everytime the swarm resets, for a total of two resets or three waves. I also reworked my bomb function, making use of a bombArray so that there could be multiple on screen. It was a mistake to reuse the laser logic, and in retrospect I should have based it off of the function to move the swarm. Since the logic was there, it was a fairly straghtforward process to change the function to run off of for loops operating on the bombArray, so that the position of each bomb is always known. This approach also fixed all the collision issues I was having and finally I was able to have multiple bombs dropping onscreen and interacting with the different elements of laser, barrier, and spaceship.
 
-### Wireframes:
-
 ## Major Hurdles
+
+The biggest challenges were working out the swarm movement and collision detection. My initial approach of working out the logic for a single alien and then trying to expand that to multiple aliens was a very flawed approach, it was only when I started using a single array to select the aliens that I was able to get them to behave how I wanted them to. The collision detection was also made easier once I made the switch to arrays, and the project finally came together.
