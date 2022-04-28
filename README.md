@@ -10,6 +10,14 @@ Shaq's Free Throw Nightmare is meant to be a version of space invaders. This was
 
 https://jdeering94.github.io/Shaq-s-Free-Throw-Nightmare/
 
+# The Brief
+
+Using HTML, CSS, and Javascript, recreate an old grid-based arcade game.
+
+For Space Invaders, the minimum requirement was for that:
+The player should be able to clear at least one wave of aliens.
+The player's score should be displayed at the end of the game.
+
 # Site Overview
 
 <p>
@@ -20,13 +28,6 @@ https://jdeering94.github.io/Shaq-s-Free-Throw-Nightmare/
 <img src="./assets/shaq-gameplay.gif" width = "47%" />
 <img src="./assets/shaq-hit.gif" width="47%"/>
 </p>
-# The Brief
-
-Using HTML, CSS, and Javascript, recreate an old grid-based arcade game.
-
-For Space Invaders, the minimum requirement was for that:
-The player should be able to clear at least one wave of aliens.
-The player's score should be displayed at the end of the game.
 
 # Preliminary work
 
