@@ -60,3 +60,46 @@ Spent most of the day adding sound effects that would trigger on certain functio
 ## Major Hurdles
  
 The biggest challenges were working out the swarm movement and collision detection. My initial approach of working out the logic for a single alien and then trying to expand that to multiple aliens was a very flawed approach, it was only when I started using a single array to select the aliens that I was able to get them to behave how I wanted them to. The collision detection was also made easier once I made the switch to arrays, and the project finally came together.
+
+## Known Bugs
+
+When deployed through github pages, the sound effects for the game don't seem to load or play, but when trying it locally they work. The soundtrack still plays however.
+
+Sometimes the collision detection isn't perfect, and a Charles Barkley can pass through a basketball shot at it, I think this is due to the set interval timings.
+
+## Wins
+
+I was probably happiest with the way the styling and sound effects came through and gave the game the look and personality that I wanted. I was also happy to make it possible to destroy the Charles Barkley heads with basketballs and that there was a barrier system that would be destroyed by the heads as well. The other major win was when I implemented arrays to solve the swarm's movement, as shown below.
+
+## Code Sample
+
+```javascript
+function moveAliens() {
+  if (alienArray.length === 0) {
+    winScreen();
+  } else if (
+    alienArray.some((element) => Math.floor(element / width) === width - 2)
+  ) {
+    alienWin = true;
+    gameOver();
+  } else if (
+    alienArray.some((element) => element % width === width - 1) === true &&
+    alienMotion === true
+  ) {
+    moveDown();
+    alienMotion = false;
+  } else if (alienMotion === true) {
+    moveRight();
+    dropBomb();
+  } else if (
+    alienArray.some((element) => element % width === 0) === true &&
+    alienMotion === false
+  ) {
+    moveDown();
+    alienMotion = true;
+  } else if (alienMotion === false) {
+    moveLeft();
+    dropBomb();
+  }
+}
+```
