@@ -106,9 +106,12 @@ function moveAliens() {
 }
 ```
 
-### Contact Me
+## Contact Me
 
 Email: JDeering94@gmail.com
+
 LinkedIn: https://www.linkedin.com/in/joe-deering/
+
 Portfolio: joedeering.co.uk
+
 Feel free to share feedback or if you are aware of any job opportunities please let me know.
