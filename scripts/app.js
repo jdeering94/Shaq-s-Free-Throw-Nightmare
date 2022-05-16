@@ -101,7 +101,7 @@ function fireLaser() {
   let firePosition = spaceshipPosition;
 
   if (firing === false) {
-    soundEffect.src = '../sounds/catching-basketball.wav';
+    soundEffect.src = './sounds/catching-basketball.wav';
     soundEffect.play();
     firingId = setInterval(LaserMoving, 100);
     function LaserMoving() {
@@ -131,7 +131,7 @@ function fireLaser() {
         clearInterval(firingId);
         score.innerHTML = parseInt(score.innerHTML) + 300;
         soundEffect.src =
-          '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
+          './sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
         soundEffect.play();
         cells[firePosition].classList.remove('laser');
         cells[firePosition].classList.remove('mothership');
@@ -358,7 +358,7 @@ function addMothership() {
 function mothershipTravel() {
   if (motherPosition === 2 * width - 2) {
     soundEffect.src =
-      '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
+      './sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
     soundEffect.play();
     cells[motherPosition].classList.remove('mothership');
     mothershipPresent = false;
@@ -376,7 +376,7 @@ function loseLife() {
   lifeArray.splice(0, 1);
   canMove = false;
   cells[spaceshipPosition].classList.add('shaqhit');
-  bombsound.src = '../sounds/shaq-why2.aiff';
+  bombsound.src = './sounds/shaq-why2.aiff';
   bombsound.play();
   setTimeout(hitShaq, 500);
   livesLeft.innerHTML = lifeArray.length;
