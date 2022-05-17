@@ -272,8 +272,8 @@ My main takeaway from this project was the usefulness of arrays. Although it see
 ### Contact Me
 Email: JDeering94@gmail.com
 
-LinkedIn: https://www.linkedin.com/in/joe-deering/
+[LinkedIn](https://www.linkedin.com/in/joe-deering/)
 
-Portfolio: joedeering.co.uk
+[Portfolio](https://joedeering.co.uk/)
 
 Feel free to share feedback or if you are aware of any job opportunities please let me know.
