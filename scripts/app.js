@@ -117,7 +117,7 @@ function fireLaser() {
         clearInterval(firingId);
         score.innerHTML = parseInt(score.innerHTML) + 20;
         soundEffect.src =
-          '../sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
+          './sounds/mixkit-basketball-ball-hitting-the-net-2084.wav';
         soundEffect.play();
         cells[firePosition].classList.remove('laser');
         cells[firePosition].classList.remove('alien');
