@@ -236,7 +236,7 @@ function dropBomb() {
   let bombPosition = alienArray[bombSource];
 
   if (chanceOfBomb === 3) {
-    bombsound.src = '../sounds/barkley-turrible.mp3';
+    bombsound.src = './sounds/barkley-turrible.mp3';
     bombsound.play();
     bombArray.push(bombPosition);
     cells[bombPosition].classList.add('alien');
@@ -336,7 +336,7 @@ function gameIsLost() {
   finalscreen.innerHTML = `The Nightmare continues...\nYour Final Score is: ${score.innerHTML}`;
   soundtrack.pause();
   mothershipsound.pause();
-  soundEffect.src = '../sounds/mixkit-basketball-buzzer-1647.wav';
+  soundEffect.src = './sounds/mixkit-basketball-buzzer-1647.wav';
   soundEffect.play();
 }
 
