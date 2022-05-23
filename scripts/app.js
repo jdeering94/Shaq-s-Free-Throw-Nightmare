@@ -376,7 +376,7 @@ function loseLife() {
   lifeArray.splice(0, 1);
   canMove = false;
   cells[spaceshipPosition].classList.add('shaqhit');
-  bombsound.src = './sounds/shaq-why2.aiff';
+  bombsound.src = './sounds/Shaq-why2.aiff';
   bombsound.play();
   setTimeout(hitShaq, 500);
   livesLeft.innerHTML = lifeArray.length;
